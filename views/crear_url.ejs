@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="stylesheet" href="/styles.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <title>MiniLink</title>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <section id="contenido">
+        <h1>Acorta tus Enlaces</h1>
+
+        <form action="/crear" method="post">
+          <input
+            type="text"
+            id="url"
+            name="url"
+            placeholder="https://example.com"
+            required
+          />
+          <button id="pasteButton" onclick="pasteFromClipboard()" type="button">
+            Pegar
+          </button>
+          <button id="submit" type="submit" onclick="return validateURL()">
+            Acortar
+          </button>
+        </form>
+
+        <% if (shortenedURL) { %>
+        <p id="urlAcortada">
+          URL acortada:
+          <a href="<%= shortenedURL %>" id="shortenedLink">
+            <%= shortenedURL %>
+          </a>
+          <button id="copyButton"><i class="fas fa-copy"></i></button>
+        </p>
+        <% if (qrCodeDataURL) { %>
+        <img id="qr" src="<%= qrCodeDataURL %>" alt="Código QR" width="200px" />
+        <a
+          href="<%= qrCodeDataURL %>"
+          download="codigo_qr.png"
+          id="downloadLink"
+          ><i class="fa-regular fa-circle-down"></i> Descargar QR</a
+        >
+        <% } %> <% } %>
+      </section>
+
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+      <div><span class="dot"></span></div>
+    </div>
+    <script>
+      const copyButton = document.getElementById('copyButton')
+      const shortenedLink = document.getElementById('shortenedLink')
+
+      copyButton.addEventListener('click', (event) => {
+        event.preventDefault()
+
+        // Crea un elemento de input temporal
+        const tempInput = document.createElement('input')
+        tempInput.value = shortenedLink.href
+        document.body.appendChild(tempInput)
+
+        // Selecciona el contenido del input temporal
+        tempInput.select()
+        tempInput.setSelectionRange(0, 99999) // Para dispositivos móviles
+
+        // Copia el contenido al portapapeles
+        document.execCommand('copy')
+        document.body.removeChild(tempInput)
+
+        // Cambia el icono temporalmente para indicar que se copió
+        const originalIconClass = copyButton.querySelector('i').className
+        copyButton.querySelector('i').className = 'fas fa-check'
+        setTimeout(() => {
+          copyButton.querySelector('i').className = originalIconClass
+        }, 2000) // Restaura el ícono después de 2 segundos
+      })
+
+      function pasteFromClipboard() {
+        const input = document.getElementById('url')
+
+        // Acceder al contenido del portapapeles
+        navigator.clipboard.readText().then((pastedText) => {
+          input.value = pastedText
+        })
+      }
+
+      function showInvalidURLAlert() {
+        alert('¡URL inválida! Por favor, ingrese una URL válida.')
+      }
+
+      function validateURL() {
+        const input = document.getElementById('url')
+        const url = input.value
+
+        // Función para validar una URL
+        const pattern = /^https?:\/\/\S+$/
+        if (!pattern.test(url)) {
+          showInvalidURLAlert()
+          return false // Cancela el envío del formulario
+        }
+
+        return true // Permite el envío del formulario
+      }
+
+      function showInvalidURLAlert() {
+        alert('¡URL inválida! Por favor, ingrese una URL válida.')
+      }
+    </script>
+  </body>
+</html>
