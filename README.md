@@ -1,6 +1,6 @@
 <div align="center">
 
-# <img src="https://minilink-l4ud.onrender.com/favicon.ico" height="20px"/> [MiniLink](https://minilink-l4ud.onrender.com/)
+# <img src="https://minilink-l4ud.onrender.com/favicon.ico" height="20px"/> [MINILINK](https://minilink-l4ud.onrender.com/)
 
 **A simple link shortener**
 
